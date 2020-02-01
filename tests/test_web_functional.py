@@ -685,7 +685,11 @@ async def test_upload_file_object(aiohttp_client) -> None:
         assert 200 == resp.status
 
 
-async def test_empty_content_for_query_without_body(aiohttp_client) -> None:
+@pytest.mark.parametrize("method", [
+    "get", "post", "options", "post", "put", "patch", "delete"
+])
+async def test_empty_content_for_query_without_body(
+        method, aiohttp_client) -> None:
 
     async def handler(request):
         assert not request.body_exists
@@ -693,10 +697,10 @@ async def test_empty_content_for_query_without_body(aiohttp_client) -> None:
         return web.Response()
 
     app = web.Application()
-    app.router.add_post('/', handler)
+    app.router.add_route(method, '/', handler)
     client = await aiohttp_client(app)
 
-    resp = await client.post('/')
+    resp = await client.request(method, '/')
     assert 200 == resp.status
 
 
@@ -953,6 +957,28 @@ async def test_response_with_precompressed_body_deflate(
 
     async def handler(request):
         headers = {'Content-Encoding': 'deflate'}
+        zcomp = zlib.compressobj(wbits=zlib.MAX_WBITS)
+        data = zcomp.compress(b'mydata') + zcomp.flush()
+        return web.Response(body=data, headers=headers)
+
+    app = web.Application()
+    app.router.add_get('/', handler)
+    client = await aiohttp_client(app)
+
+    resp = await client.get('/')
+    assert 200 == resp.status
+    data = await resp.read()
+    assert b'mydata' == data
+    assert resp.headers.get('Content-Encoding') == 'deflate'
+
+
+async def test_response_with_precompressed_body_deflate_no_hdrs(
+        aiohttp_client) -> None:
+
+    async def handler(request):
+        headers = {'Content-Encoding': 'deflate'}
+        # Actually, wrong compression format, but
+        # should be supported for some legacy cases.
         zcomp = zlib.compressobj(wbits=-zlib.MAX_WBITS)
         data = zcomp.compress(b'mydata') + zcomp.flush()
         return web.Response(body=data, headers=headers)
