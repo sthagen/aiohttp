@@ -144,6 +144,7 @@ Jinkyu Yi
 Joel Watts
 Jon Nabozny
 Jonas Obrist
+Jonny Tan
 Joongi Kim
 Josep Cugat
 Joshu Coats
@@ -174,6 +175,7 @@ Manuel Miranda
 Marat Sharafutdinov
 Marco Paolini
 Mariano Anaya
+Mariusz Masztalerczuk
 Martijn Pieters
 Martin Melka
 Martin Richard
@@ -182,6 +184,7 @@ Mathieu Dugré
 Matt VanEseltine
 Matthieu Hauglustaine
 Matthieu Rigal
+Meet Mangukiya
 Michael Ihnatenko
 Mikhail Burshteyn
 Mikhail Kashkin
@@ -259,6 +262,7 @@ Vasiliy Faronov
 Vasyl Baran
 Victor Collod
 Victor Kovtun
+Victor Makarov
 Vikas Kawadia
 Viktor Danyliuk
 Ville Skyttä
